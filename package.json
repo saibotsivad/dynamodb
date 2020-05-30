@@ -1,0 +1,23 @@
+{
+  "name": "@saibotsivad/dynamodb",
+  "version": "0.0.0",
+  "description": "Minimalist DynamoDB request generator.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/saibotsivad/dynamodb.git"
+  },
+  "keywords": [
+    "aws",
+    "dynamodb"
+  ],
+  "author": "saibotsivad",
+  "license": "VOL",
+  "bugs": {
+    "url": "https://github.com/saibotsivad/dynamodb/issues"
+  },
+  "homepage": "https://github.com/saibotsivad/dynamodb#readme"
+}
