@@ -1,7 +1,5 @@
 # @saibotsivad/dynamodb
 
-# !!!! INCOMPLETE !!!!
-
 Minimalist DynamoDB request generator.
 
 This is essentially a thin wrapper for generating HTTP requests to AWS.
@@ -17,8 +15,8 @@ import { createAwsSigner } from 'sign-aws-requests'
 // Normal AWS IAM credentials:
 const credentials = {
 	region: 'us-east-1',
-	secretAccessKey: '',
-	accessKeyId: ''
+	secretAccessKey: 'hKVU_EXAMPLE_SECRET_5rjo',
+	accessKeyId: 'AKIA_EXAMPLE_KEY'
 }
 
 const db = dynamodb({ credentials, createAwsSigner })
@@ -41,6 +39,8 @@ await db('PutItem', {
 ```
 
 ## API
+
+
 
 Supported `type` string values:
 
@@ -85,3 +85,7 @@ Supported `type` string values:
 * [UpdateTable](https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/DynamoDB.html#updateTable-property)
 * [UpdateTableReplicaAutoScaling](https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/DynamoDB.html#updateTableReplicaAutoScaling-property)
 * [UpdateTimeToLive](https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/DynamoDB.html#updateTimeToLive-property)
+
+## License
+
+Published and released under the [VOL](http://veryopenlicense.com).
