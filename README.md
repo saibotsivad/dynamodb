@@ -1,16 +1,21 @@
 # @saibotsivad/dynamodb
 
-Minimalist DynamoDB request generator.
+Generate signed HTTP requests to AWS DynamoDB.
 
-This is essentially a thin wrapper for generating HTTP requests to AWS.
+## Install
 
-## Example
+The normal way:
 
-Use it like this:
+```shell
+npm install @saibotsivad/dynamodb
+```
+
+## Overview
+
+Instantiate with the normal AWS credentials and a fetch-like interface (see below for compatability notes), then call it to make requests:
 
 ```js
 import { dynamodb } from '@saibotsivad/dynamodb'
-import { createAwsSigner } from 'sign-aws-requests'
 
 // Normal AWS IAM credentials:
 const credentials = {
@@ -19,9 +24,15 @@ const credentials = {
 	accessKeyId: 'AKIA_EXAMPLE_KEY'
 }
 
-const db = dynamodb({ credentials, createAwsSigner })
+// In a Worker environment (aka Cloudflare Workers) you can use the
+// global fetch directly, but in the NodeJS environment, you can
+// use something like "httpie":
+import { send } from 'httpie'
+const fetch = async (url, options) => send(options.method, url, options)
 
-await db('PutItem', {
+const db = dynamodb({ credentials, fetch })
+
+const response = await db('PutItem', {
 	Item: {
 		AlbumTitle: {
 			S: 'Somewhat Famous'
@@ -32,10 +43,10 @@ await db('PutItem', {
 		SongTitle: {
 			S: 'Call Me Today'
 		}
-	}, 
-	ReturnConsumedCapacity: 'TOTAL', 
+	},
+	ReturnConsumedCapacity: 'TOTAL',
 	TableName: 'Music'
-});
+})
 ```
 
 ## API

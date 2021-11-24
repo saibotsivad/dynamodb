@@ -22,6 +22,12 @@ Change categories are:
 ### Removed
 ### Security
 
+## [Unreleased]
+### Added
+- Tests that actually hit up DynamoDB to make sure everything is working.
+### Changed
+- The signing function is bundled.
+
 ## [0.0.0-0.0.1] - 2021-02-08
 ### Added
 - Created the base project and touch up some stuff.

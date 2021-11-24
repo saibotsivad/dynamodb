@@ -2,22 +2,40 @@
   "name": "@saibotsivad/dynamodb",
   "version": "0.0.1",
   "description": "Minimalist DynamoDB request generator.",
-  "main": "index.js",
+  "type": "module",
+  "main": "src/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node ./test.js"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/saibotsivad/dynamodb.git"
   },
+  "files": [
+    "dist",
+    "src",
+    "README.md",
+    "LICENSE.md"
+  ],
   "keywords": [
     "aws",
     "dynamodb"
   ],
-  "author": "saibotsivad",
-  "license": "VOL",
+  "author": {
+    "name": "Tobias Davis",
+    "email": "tobias@davistobias.com",
+    "url": "https://davistobias.com"
+  },
+  "license": "SEE LICENSE IN LICENSE.md",
   "bugs": {
     "url": "https://github.com/saibotsivad/dynamodb/issues"
   },
-  "homepage": "https://github.com/saibotsivad/dynamodb#readme"
+  "homepage": "https://github.com/saibotsivad/dynamodb#readme",
+  "devDependencies": {
+    "httpie": "^1.1.2",
+    "uvu": "^0.5.2"
+  },
+  "dependencies": {
+    "sign-aws-requests": "^1.0.1"
+  }
 }
