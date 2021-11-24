@@ -1,2 +1,13 @@
-/node_modules
+# the usual culprits
 .DS_Store
+/node_modules
+/apps/*/node_modules
+/libs/*/node_modules
+
+# personal local files
+/configuration.sh
+/configuration-*.sh
+/fiddle.js
+
+# built things
+/dist
