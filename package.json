@@ -1,6 +1,6 @@
 {
   "name": "@saibotsivad/dynamodb",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "Minimalist DynamoDB request generator.",
   "type": "module",
   "main": "src/index.js",
