@@ -29,8 +29,8 @@ const credentials = {
 const db = dynamodb({ credentials, fetch: globalThis.fetch })
 
 // But in the NodeJS environment, you'll need to use something like "httpie":
-import { send } from 'httpie'
-const fetch = async (url, options) => send(options.method, url, options)
+import { post } from 'httpie' // only POST is used
+const fetch = async (url, options) => post(url, options)
 const db = dynamodb({ credentials, fetch })
 
 const response = await db('PutItem', {

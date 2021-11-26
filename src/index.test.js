@@ -1,4 +1,4 @@
-import { send } from 'httpie'
+import { post } from 'httpie'
 import { test } from 'uvu'
 import * as assert from 'uvu/assert'
 
@@ -10,7 +10,7 @@ const credentials = {
 	accessKeyId: process.env.AWS_ACCESS_KEY_ID,
 }
 const TableName = process.env.DYNAMODB_TABLE
-const fetch = async (url, options) => send(options.method, url, options)
+const fetch = async (url, options) => post(url, options)
 const db = dynamodb({ credentials, fetch })
 
 const TEST_STRING = Math.random().toString()
