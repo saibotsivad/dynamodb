@@ -4,8 +4,9 @@
   "description": "Minimalist DynamoDB request generator.",
   "type": "module",
   "main": "src/index.js",
+  "types": "index.d.ts",
   "scripts": {
-    "test": "node ./test.js"
+    "test": "eslint src/*.js && node ./src/index.test.js"
   },
   "repository": {
     "type": "git",
@@ -32,6 +33,7 @@
   },
   "homepage": "https://github.com/saibotsivad/dynamodb#readme",
   "devDependencies": {
+    "eslint": "^8.3.0",
     "httpie": "^1.1.2",
     "uvu": "^0.5.2"
   },

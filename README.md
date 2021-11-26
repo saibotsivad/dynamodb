@@ -25,14 +25,17 @@ const credentials = {
 }
 
 // In a Worker environment (aka Cloudflare Workers) you can use the
-// global fetch directly, but in the NodeJS environment, you can
-// use something like "httpie":
+// global fetch directly:
+const db = dynamodb({ credentials, fetch: globalThis.fetch })
+
+// But in the NodeJS environment, you'll need to use something like "httpie":
 import { send } from 'httpie'
 const fetch = async (url, options) => send(options.method, url, options)
-
 const db = dynamodb({ credentials, fetch })
 
 const response = await db('PutItem', {
+	ReturnConsumedCapacity: 'TOTAL',
+	TableName: 'Music',
 	Item: {
 		AlbumTitle: {
 			S: 'Somewhat Famous'
@@ -44,16 +47,45 @@ const response = await db('PutItem', {
 			S: 'Call Me Today'
 		}
 	},
-	ReturnConsumedCapacity: 'TOTAL',
-	TableName: 'Music'
 })
+// response => { ConsumedCapacity: { CapacityUnits: 1, TableName: 'Music' } }
 ```
+
+## Error Handling
+
+If the response is an error, for example if you try to `PutItem` on a table that doesn't exist, calling `await db` will throw an error named `AwsException` that contains the following properties:
+
+- `name: String` - Will always be `AwsException`.
+- `method: String` - This is simply the method name that you provided, e.g. `PutItem`.
+- `params: Object` - These are the parameters that were used, e.g. `{ TableName, Item }`.
+- `type: String` - The long-form error code from AWS, e.g. `com.amazonaws.dynamodb.v20120810#ResourceNotFoundException`.
+- `code: String` - The short-form error code, e.g. `ResourceNotFoundException`.
 
 ## API
 
+Instantiate a database using the AWS credentials, and a fetch-like object:
 
+```ts
+import { dynamodb } from '@saibotsivad/dynamodb'
+const db = dynamodb({
+	credentials: {
+		region: 'us-east-1',
+		secretAccessKey: 'hKVU_EXAMPLE_SECRET_5rjo',
+		accessKeyId: 'AKIA_EXAMPLE_KEY'
+	},
+	fetch: globalThis.fetch
+})
+```
 
-Supported `type` string values:
+The `fetch` function must have a signature like `async (method: string, params: object)` and return one of the following:
+
+- `{ json: async function }` - The normal `fetch` does this.
+- `{ data: string | object }` - If the `data` property is an object it'll get returned, or if it's a string it'll get JSON-parsed.
+- `{ body: string | object }` - Same thing with the `body` property.
+
+## Methods
+
+The DynamoDB API supports the following `method` values:
 
 * [BatchGetItem](https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/DynamoDB.html#batchGetItem-property)
 * [BatchWriteItem](https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/DynamoDB.html#batchWriteItem-property)

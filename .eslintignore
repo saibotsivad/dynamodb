@@ -1,6 +1,7 @@
 # the usual suspects
 /node_modules
 .DS_Store
+*.ts
 
 # personal local files
 /configuration.js

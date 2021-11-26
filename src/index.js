@@ -1,21 +1,26 @@
 import { createAwsSigner } from 'sign-aws-requests'
 
 class AwsException extends Error {
-	constructor(type, params, code, message) {
-		super(message)
+	constructor(method, params, data) {
+		super(data.message || 'Unknown error from AWS.')
 		this.name = 'AwsException'
-		this.code = code
-		this.message = message
-		this.type = type
+		this.method = method
 		this.params = params
+		this.type = data.__type
+		this.code = data.__type.split('#').pop()
 	}
 }
 
-export const dynamodb = ({
+// eslint-disable-next-line valid-jsdoc
+/**
+ * Instantiate a DynamoDB requester using credentials and a fetch-like function.
+ * @type {import("../index").dynamodb}
+ */
+export function dynamodb({
 	credentials: { region, secretAccessKey, accessKeyId },
 	fetch: makeRequest,
 	version = '20120810',
-}) => {
+}) {
 	const sign = createAwsSigner({
 		config: {
 			service: 'dynamodb',
@@ -25,13 +30,13 @@ export const dynamodb = ({
 		},
 	})
 
-	return async (type, params) => {
+	return async (method, params) => {
 		const request = {
 			url: `https://dynamodb.${region}.amazonaws.com`,
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/x-amz-json-1.0',
-				'X-Amz-Target': `DynamoDB_${version}.${type}`,
+				'X-Amz-Target': `DynamoDB_${version}.${method}`,
 				Host: `dynamodb.${region}.amazonaws.com`,
 			},
 			body: JSON.stringify(params),
@@ -49,12 +54,13 @@ export const dynamodb = ({
 
 		// We'll try the few different common ways to get the data.
 		let data
-		if (typeof response.json === 'function') data = response.json()
+		if (typeof response.json === 'function') data = await response.json()
 		else if (typeof response.data === 'string') data = JSON.parse(response.data)
+		else if (typeof response.body === 'string') data = JSON.parse(response.body)
 		else data = response.data || response.body
 
 		// Then we look for errors to throw.
-		if (data.__type) throw new AwsException(type, params, data.__type.split('#').pop(), data.message)
+		if (data.__type) throw new AwsException(method, params, data)
 
 		// Otherwise return whatever came back.
 		return data

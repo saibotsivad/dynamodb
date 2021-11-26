@@ -2,7 +2,7 @@ import { send } from 'httpie'
 import { test } from 'uvu'
 import * as assert from 'uvu/assert'
 
-import { dynamodb } from './src/index.js'
+import { dynamodb } from './index.js'
 
 const credentials = {
 	region: process.env.AWS_REGION,
@@ -72,7 +72,8 @@ test('really simple put+get+remove to make sure everything works', async () => {
 		},
 		ConsistentRead: true,
 	})
-	assert.not.ok(secondGet.Item, 'the get does not yield anything')
+	assert.not.ok(secondGet.Item, 'it is empty')
+	// assert.not.ok(secondGet.Item, 'the get does not yield anything')
 	// now we try to do something that we can't, to make sure errors
 	let error
 	try {
@@ -87,8 +88,11 @@ test('really simple put+get+remove to make sure everything works', async () => {
 	} catch (e) {
 		error = e
 	}
-	assert.equal(error.code, 'ResourceNotFoundException', 'it threw the correct error')
-	assert.equal(error.params.Key.pk.S, 'does-not-exist', 'it passes along the params correctly')
+	assert.equal(error.method, 'GetItem', 'has the method')
+	assert.equal(error.params.Key.pk.S, 'does-not-exist', 'passes along the params correctly')
+	assert.equal(error.type, 'com.amazonaws.dynamodb.v20120810#ResourceNotFoundException', 'has the long version')
+	assert.equal(error.code, 'ResourceNotFoundException', 'has the short version')
+	assert.equal(error.message, 'Requested resource not found', 'has the message from AWS')
 })
 
 test.run()
