@@ -22,6 +22,10 @@ Change categories are:
 ### Removed
 ### Security
 
+## [1.1.0](https://github.com/saibotsivad/dynamodb/compare/v1.0.1...v1.1.0) - 2021-11029
+### Added
+- Links to the v3 AWS docs, and some notes about how to read the docs.
+
 ## [1.0.0-1.0.1](https://github.com/saibotsivad/dynamodb/compare/06622ce96f39daaaecae8d5ffc35228f1f15311b...v1.0.1) - 2021-11-26
 ### Added
 - Tests that actually access DynamoDB to make sure everything is working.
