@@ -17,7 +17,7 @@ class AwsException extends Error {
  * @type {import("../index").dynamodb}
  */
 export function dynamodb({
-	credentials: { region, secretAccessKey, accessKeyId },
+	credentials: { region, secretAccessKey, accessKeyId, sessionToken },
 	fetch: makeRequest,
 	version = '20120810',
 }) {
@@ -41,6 +41,7 @@ export function dynamodb({
 			},
 			body: JSON.stringify(params),
 		}
+		if (sessionToken) request.headers['X-Amz-Security-Token'] = sessionToken
 		const { authorization } = await sign(request)
 		request.headers.Authorization = authorization
 
