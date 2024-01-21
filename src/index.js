@@ -7,7 +7,7 @@ class AwsException extends Error {
 		this.method = method
 		this.params = params
 		this.type = data.__type
-		this.code = data.__type.split('#').pop()
+		this.code = data.__type?.split('#').pop()
 	}
 }
 
